@@ -83,3 +83,59 @@ data:Object.values(totales)
 }
 
 cargarGrafico()
+
+async function cargarGastos(){
+
+const {data} = await supabaseClient
+.from("gastos")
+.select("*")
+.order("fecha",{ascending:false})
+
+const tbody = document.querySelector("#tablaGastos tbody")
+
+tbody.innerHTML=""
+
+data.forEach(gasto=>{
+
+const fila = document.createElement("tr")
+
+fila.innerHTML = `
+<td>${gasto.fecha}</td>
+<td>${gasto.vehiculo}</td>
+<td>${gasto.tipo}</td>
+<td>$${gasto.monto}</td>
+<td>
+<button class="borrar" onclick="borrarGasto(${gasto.id})">
+🗑
+</button>
+</td>
+`
+
+tbody.appendChild(fila)
+
+})
+
+}
+
+async function borrarGasto(id){
+
+if(!confirm("¿Seguro que querés borrar este gasto?")) return
+
+await supabaseClient
+.from("gastos")
+.delete()
+.eq("id",id)
+
+cargarGastos()
+cargarGrafico()
+
+}
+
+cargarGastos()
+
+alert("Gasto guardado")
+
+form.reset()
+
+cargarGrafico()
+cargarGastos()

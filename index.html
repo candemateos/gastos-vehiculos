@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Control de gastos vehículos</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<h2>Registrar gasto</h2>
+
+<form id="gastoForm">
+
+<label>Fecha</label>
+<input type="date" id="fecha" required>
+
+<label>Vehículo</label>
+<select id="vehiculo">
+
+<option>Kia 1</option>
+<option>Kia 2</option>
+<option>Berlingo</option>
+<option>Isuzu</option>
+
+</select>
+
+<label>Tipo de gasto</label>
+<select id="tipo">
+
+<option>Combustible</option>
+<option>Peajes</option>
+<option>Service</option>
+<option>Cubiertas</option>
+<option>Patente</option>
+<option>Seguro</option>
+<option>VTV</option>
+<option>Otro</option>
+
+</select>
+
+<label>Monto</label>
+<input type="number" id="monto" required>
+
+<label>Kilómetros</label>
+<input type="number" id="km">
+
+<label>Observaciones</label>
+<input type="text" id="obs">
+
+<button type="submit">Guardar gasto</button>
+
+</form>
+
+<hr>
+
+<button id="descargar">Descargar Excel del mes</button>
+
+<h3>Resumen del mes</h3>
+
+<canvas id="grafico"></canvas>
+
+<script src="app.js"></script>
+
+</body>
+</html>

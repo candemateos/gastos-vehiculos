@@ -7,6 +7,8 @@
 
 <title>Control de gastos vehículos</title>
 
+<link rel="icon" type="image/jpg" href="favicon.jpg">
+
 <link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -17,7 +19,10 @@
 
 <body>
 
+<div class="top-bar">
 <h2>Registrar gasto</h2>
+<img src="logo.png" alt="Logo empresa" class="logo">
+</div>
 
 <form id="gastoForm">
 
@@ -26,17 +31,14 @@
 
 <label>Vehículo</label>
 <select id="vehiculo">
-
 <option>Kia 1</option>
 <option>Kia 2</option>
 <option>Berlingo</option>
 <option>Isuzu</option>
-
 </select>
 
 <label>Tipo de gasto</label>
 <select id="tipo">
-
 <option>Combustible</option>
 <option>Peajes</option>
 <option>Service</option>
@@ -45,11 +47,11 @@
 <option>Seguro</option>
 <option>VTV</option>
 <option>Otro</option>
-
 </select>
 
-<label>Monto</label>
-<input type="number" id="monto" required>
+
+<label for="monto">Monto</label>
+<input type="text" id="monto" name="monto" placeholder="$ 0,00">
 
 <label>Kilómetros</label>
 <input type="number" id="km">
@@ -57,9 +59,30 @@
 <label>Observaciones</label>
 <input type="text" id="obs">
 
+<label>Foto del ticket</label>
+<input type="file" id="foto" accept="image/*">
+
 <button type="submit">Guardar gasto</button>
 
 </form>
+
+<hr>
+
+<h3>Filtrar</h3>
+
+<label>Mes</label>
+<input type="month" id="filtroMes">
+
+<label>Vehículo</label>
+<select id="filtroVehiculo">
+<option value="">Todos</option>
+<option>Kia 1</option>
+<option>Kia 2</option>
+<option>Berlingo</option>
+<option>Isuzu</option>
+</select>
+
+<button type="button" onclick="aplicarFiltros()">Filtrar</button>
 
 <hr>
 
@@ -73,6 +96,7 @@
 <th>Vehículo</th>
 <th>Tipo</th>
 <th>Monto</th>
+<th>Ticket</th>
 <th>Borrar</th>
 </tr>
 </thead>
@@ -83,6 +107,7 @@
 
 <hr>
 
+
 <button id="descargar">Descargar Excel del mes</button>
 
 <hr>
@@ -92,6 +117,36 @@
 <canvas id="grafico"></canvas>
 
 <script src="app.js"></script>
+
+
+<script>
+const montoInput = document.getElementById("monto");
+
+montoInput.addEventListener("input", function (e) {
+
+    let value = e.target.value;
+
+    // eliminar todo lo que no sea número
+    value = value.replace(/\D/g, "");
+
+    if (value === "") {
+        e.target.value = "";
+        return;
+    }
+
+    // convertir a número con centavos
+    value = (parseInt(value) / 100).toFixed(2);
+
+    // formatear a pesos argentinos
+    const formatted = new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS"
+    }).format(value);
+
+    e.target.value = formatted;
+});
+</script>
+
 
 </body>
 </html>

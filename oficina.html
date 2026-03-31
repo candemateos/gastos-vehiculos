@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gastos de Oficina</title>
+  <link rel="stylesheet" href="oficina.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.jpg" type="image/jpg">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <img src="logo.png" alt="Logo empresa" class="logo">
+  </header>
+
+  <!-- FORMULARIO -->
+  <section class="form-container">
+
+    <h2>Gastos Oficina</h2>
+
+    <form id="formGasto">
+
+      <!-- FECHA -->
+      <label>Fecha</label>
+      <input type="date" id="fecha" required>
+
+      <!-- TIPO -->
+      <label>Tipo de gasto</label>
+      <select id="tipo" required>
+        <option value="">Seleccionar</option>
+        <option value="fijo">Fijo</option>
+        <option value="variable">Variable</option>
+      </select>
+
+      <!-- DETALLE -->
+      <label>Detalle</label>
+      <select id="detalle" required>
+        <option value="">Seleccionar</option>
+        <option>Luz</option>
+        <option>Obras Sanitarias</option>
+        <option>Gas</option>
+        <option>Telefono Fijo</option>
+        <option>Telefono Movil</option>
+        <option>Impuestos</option>
+        <option>Monotributo</option>
+        <option>Contador</option>
+        <option>Abogado</option>
+        <option>Alarma</option>
+        <option>Ferreteria</option>
+        <option>Servicio de Limpieza</option>
+        <option>Elementos de Seguridad</option>
+      </select>
+
+      <!-- MONTO -->
+      <label>Monto</label>
+      <input type="number" id="monto" placeholder="Ej: 15000" required>
+
+      <!-- OBSERVACIONES -->
+      <label>Observaciones</label>
+      <textarea id="observaciones" placeholder="Opcional..."></textarea>
+
+      <!-- BOTÓN -->
+      <button type="submit">Guardar gasto</button>
+
+    </form>
+
+  </section>
+
+  <!-- LISTADO -->
+  <section class="tabla-container">
+
+    <h2>Gastos registrados</h2>
+
+    <table id="tablaGastos">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Detalle</th>
+          <th>Monto</th>
+          <th>Obs.</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      </tbody>
+    </table>
+
+    <!-- TOTAL -->
+    <h3> Total de gastos:</h3>
+    <h3 id="total">$ 0</h3>
+
+  </section>
+
+  <!-- BOTÓN VOLVER -->
+<div class="volver-container">
+  <button class="btn-volver" onclick="volver()">← Volver</button>
+</div>
+
+  <!-- SCRIPT -->
+  <script src="oficina.js"></script>
+
+
+</body>
+</html>

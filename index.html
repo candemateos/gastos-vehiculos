@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Gastos</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.jpg">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+<header class="header-pro">
+  <img src="logo.png" alt="Logo" class="logo-header">
+  <h1>Gastos de la Empresa</h1>
+</header>
+
+ <!-- CARDS -->
+<section class="cards">
+
+  <div class="card vehiculos" onclick="irA('vehiculos.html')">
+    <div class="icono">🚗</div>
+    <h3>Vehículos</h3>
+    <p id="totalVehiculos">$ 0</p>
+  </div>
+
+  <div class="card oficina" onclick="irA('oficina.html')">
+    <div class="icono">🏢</div>
+    <h3>Oficina</h3>
+    <p id="totalOficina">$ 0</p>
+  </div>
+
+  <div class="card obras" onclick="irA('obras.html')">
+    <div class="icono">🏗️</div>
+    <h3>Obras</h3>
+    <p id="totalObras">$ 0</p>
+  </div>
+
+</section>
+
+   <!-- TOTAL PRO -->
+  <section class="total-box">
+    <h2>Total del mes</h2>
+    <p id="totalGeneral">$ 0</p>
+  </section>
+
+ <!-- FILTRO -->
+  <section class="filtro">
+    <label>Seleccionar mes:</label>
+    <input type="month" id="filtroMes">
+  </section>
+
+ 
+  <!-- GRÁFICO TORTA -->
+  <section class="grafico-container">
+    <canvas id="graficoGeneral"></canvas>
+  </section>
+
+  <!-- EVOLUCIÓN -->
+  <section style="width: 90%; max-width: 700px; margin: auto;">
+    <h2 style="text-align:center;">Evolución mensual</h2>
+    <canvas id="graficoEvolucion"></canvas>
+  </section>
+
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
+
+</body>
+</html>

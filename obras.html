@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gastos de Obras</title>
+  <link rel="stylesheet" href="obras.css">
+
+  <link rel="icon" href="favicon.jpg" type="image/jpg">
+</head>
+
+<body>
+
+  <header class="header">
+    <img src="logo.png" alt="Logo empresa" class="logo">
+  </header>
+
+  <section class="form-container">
+
+    <h2>Gastos Obras</h2>
+
+    <form id="formGasto">
+
+      <!-- FECHA -->
+      <label>Fecha</label>
+      <input type="date" id="fecha" required>
+
+      <!-- TIPO -->
+      <label>Tipo de gasto</label>
+      <select id="tipo" required>
+        <option value="">Seleccionar</option>
+        <option value="material">Material</option>
+        <option value="mano_obra">Mano de obra</option>
+        <option value="servicio">Servicio</option>
+      </select>
+
+      <!-- DETALLE -->
+      <label>Detalle</label>
+      <input type="text" id="detalle" placeholder="Ej: Cemento, Electricista..." required>
+
+      <!-- MONTO -->
+      <label>Monto</label>
+      <input type="number" id="monto" required>
+
+      <!-- OBS -->
+      <label>Observaciones</label>
+      <textarea id="observaciones"></textarea>
+
+      <button type="submit">Guardar gasto</button>
+
+    </form>
+
+  </section>
+
+  <section class="tabla-container">
+
+    <h2>Gastos registrados</h2>
+
+    <table id="tablaGastos">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Detalle</th>
+          <th>Monto</th>
+          <th>Obs.</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h3> Total de gastos: </h3>
+    <h3 id="total">$ 0</h3>
+
+  </section>
+
+<div class="volver-container">
+  <button class="btn-volver" onclick="volver()">← Volver</button>
+</div>
+
+  <script src="obras.js"></script>
+
+</body>
+</html>

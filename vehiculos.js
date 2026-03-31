@@ -7,9 +7,7 @@ const form = document.getElementById("gastoForm")
 
 let grafico = null
 
-
 // FORMATEO AUTOMÁTICO DE PESOS
-
 const montoInput = document.getElementById("monto")
 
 montoInput.addEventListener("input", function(e){
@@ -33,8 +31,7 @@ montoInput.addEventListener("input", function(e){
 
 })
 
-
-// crear popup para ver tickets
+// POPUP PARA VER TICKETS
 const popup = document.createElement("div")
 popup.id = "popupTicket"
 popup.style.position = "fixed"
@@ -66,13 +63,12 @@ function cerrarFoto(){
  popup.style.display = "none"
 }
 
-
+// GUARDAR GASTO
 form.addEventListener("submit", async (e)=>{
 
  e.preventDefault()
 
  const archivo = document.getElementById("foto").files[0]
-
  let urlFoto = null
 
  if(archivo){
@@ -95,11 +91,9 @@ form.addEventListener("submit", async (e)=>{
   .getPublicUrl(nombreArchivo)
 
   urlFoto = data.publicUrl
-
  }
 
- // limpiar formato del monto antes de guardar
-
+ // LIMPIAR MONTO
  let montoNumero = document.getElementById("monto").value
  .replace("$","")
  .replace(/\./g,"")
@@ -109,7 +103,6 @@ form.addEventListener("submit", async (e)=>{
  montoNumero = parseFloat(montoNumero)
 
  const gasto = {
-
   fecha: document.getElementById("fecha").value,
   vehiculo: document.getElementById("vehiculo").value,
   tipo: document.getElementById("tipo").value,
@@ -117,7 +110,6 @@ form.addEventListener("submit", async (e)=>{
   km: document.getElementById("km").value || null,
   observaciones: document.getElementById("obs").value,
   foto: urlFoto
-
  }
 
  await supabaseClient
@@ -133,6 +125,7 @@ form.addEventListener("submit", async (e)=>{
 
 })
 
+// DESCARGAR EXCEL
 document.getElementById("descargar").addEventListener("click", descargarExcel)
 
 async function descargarExcel(){
@@ -147,10 +140,9 @@ async function descargarExcel(){
  XLSX.utils.book_append_sheet(workbook, worksheet, "Gastos")
 
  XLSX.writeFile(workbook,"gastos_vehiculos.xlsx")
-
 }
 
-
+// GRÁFICO
 async function cargarGrafico(){
 
  const {data} = await supabaseClient
@@ -160,13 +152,10 @@ async function cargarGrafico(){
  let totales = {}
 
  data.forEach(g=>{
-
   if(!totales[g.vehiculo]){
    totales[g.vehiculo]=0
   }
-
   totales[g.vehiculo]+=g.monto
-
  })
 
  const ctx = document.getElementById("grafico")
@@ -176,19 +165,25 @@ async function cargarGrafico(){
  }
 
  grafico = new Chart(ctx,{
- type:"bar",
- data:{
-  labels:Object.keys(totales),
-  datasets:[{
-   label:"Gasto por vehículo",
-   data:Object.values(totales)
-  }]
- }
+  type:"bar",
+  data:{
+   labels:Object.keys(totales),
+   datasets:[{
+    label:"Gasto por vehículo",
+    data:Object.values(totales),
+    borderRadius:8
+   }]
+  },
+  options:{
+   responsive:true,
+   plugins:{
+    legend:{ display:false }
+   }
+  }
  })
-
 }
 
-
+// CARGAR GASTOS + DASHBOARD
 async function cargarGastos(){
 
  const {data} = await supabaseClient
@@ -197,10 +192,13 @@ async function cargarGastos(){
  .order("fecha",{ascending:false})
 
  const tbody = document.querySelector("#tablaGastos tbody")
-
  tbody.innerHTML=""
 
+ let total = 0;
+
  data.forEach(gasto=>{
+
+  total += gasto.monto;
 
   const fila = document.createElement("tr")
 
@@ -211,19 +209,25 @@ async function cargarGastos(){
   <td>$${gasto.monto}</td>
   <td>${gasto.foto ? `<button onclick="verFoto('${gasto.foto}')">📷</button>` : ""}</td>
   <td>
-  <button class="borrar" onclick="borrarGasto(${gasto.id})">
-  🗑
-  </button>
+  <button class="borrar" onclick="borrarGasto(${gasto.id})">🗑</button>
   </td>
   `
 
   tbody.appendChild(fila)
-
  })
 
+ const formatter = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS"
+ })
+
+ document.getElementById("totalVehiculosPantalla").textContent = formatter.format(total)
+ document.getElementById("cantidadGastos").textContent = data.length
+
+localStorage.setItem("gastosVehiculos", JSON.stringify(data));
 }
 
-
+// BORRAR
 async function borrarGasto(id){
 
  if(!confirm("¿Seguro que querés borrar este gasto?")) return
@@ -235,10 +239,9 @@ async function borrarGasto(id){
 
  cargarGastos()
  cargarGrafico()
-
 }
 
-
+// FILTROS (AHORA TAMBIÉN ACTUALIZAN DASHBOARD)
 async function aplicarFiltros(){
 
  const mes = document.getElementById("filtroMes").value
@@ -250,19 +253,18 @@ async function aplicarFiltros(){
 
  if(mes){
 
- const inicio = mes + "-01"
+  const inicio = mes + "-01"
 
- const partes = mes.split("-")
- const anio = parseInt(partes[0])
- const mesNumero = parseInt(partes[1])
+  const partes = mes.split("-")
+  const anio = parseInt(partes[0])
+  const mesNumero = parseInt(partes[1])
 
- const finFecha = new Date(anio, mesNumero, 0)
- const fin = finFecha.toLocaleDateString("sv-SE")
+  const finFecha = new Date(anio, mesNumero, 0)
+  const fin = finFecha.toLocaleDateString("sv-SE")
 
- query = query
- .gte("fecha", inicio)
- .lte("fecha", fin)
-
+  query = query
+  .gte("fecha", inicio)
+  .lte("fecha", fin)
  }
 
  if(vehiculo){
@@ -272,10 +274,13 @@ async function aplicarFiltros(){
  const {data} = await query
 
  const tbody = document.querySelector("#tablaGastos tbody")
-
  tbody.innerHTML=""
 
+ let total = 0;
+
  data.forEach(gasto=>{
+
+  total += gasto.monto;
 
   const fila = document.createElement("tr")
 
@@ -286,17 +291,29 @@ async function aplicarFiltros(){
   <td>$${gasto.monto}</td>
   <td>${gasto.foto ? `<button onclick="verFoto('${gasto.foto}')">📷</button>` : ""}</td>
   <td>
-  <button class="borrar" onclick="borrarGasto(${gasto.id})">
-  🗑
-  </button>
+  <button class="borrar" onclick="borrarGasto(${gasto.id})">🗑</button>
   </td>
   `
 
   tbody.appendChild(fila)
-
  })
 
+ const formatter = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS"
+ })
+
+ document.getElementById("totalVehiculosPantalla").textContent = formatter.format(total)
+ document.getElementById("cantidadGastos").textContent = data.length
+
+localStorage.setItem("gastosVehiculos", JSON.stringify(data || []));
 }
 
+// INICIO
 cargarGrafico()
 cargarGastos()
+
+// BOTON VOLVER
+function volver() {
+  window.location.href = "index.html";
+}

@@ -9,7 +9,7 @@
 
 <link rel="icon" type="image/jpg" href="favicon.jpg">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="vehiculos.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -18,7 +18,6 @@
 </head>
 
 <body>
-
 <div class="top-bar">
 <h2>Registrar gasto</h2>
 <img src="logo.png" alt="Logo empresa" class="logo">
@@ -114,9 +113,23 @@
 
 <h3>Resumen del mes</h3>
 
+<div class="resumen">
+
+  <div class="card-resumen">
+    <p>Total gastos</p>
+    <h2 id="totalVehiculosPantalla">$ 0</h2>
+  </div>
+
+  <div class="card-resumen">
+    <p>Cantidad de gastos</p>
+    <h2 id="cantidadGastos">0</h2>
+  </div>
+
+</div>
+
 <canvas id="grafico"></canvas>
 
-<script src="app.js"></script>
+<script src="vehiculos.js"></script>
 
 
 <script>
@@ -147,6 +160,9 @@ montoInput.addEventListener("input", function (e) {
 });
 </script>
 
+<div class="volver-container">
+  <button class="btn-volver" onclick="volver()">← Volver</button>
+</div>
 
 </body>
 </html>
